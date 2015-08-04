@@ -15,7 +15,8 @@ class Piece
 
     self.class::DELTAS.each do |delta|
       p delta
-      positions.concat(potential_moves(delta))
+      possible_moves = potential_moves(delta)
+      positions.concat(possible_moves) unless possible_moves.nil?
     end
 
     positions
@@ -55,7 +56,8 @@ end
 
 class SteppingPiece < Piece
   def potential_moves(delta)
-    [next_pos(pos, delta)]
+    move = next_pos(pos, delta)
+    [move] if valid_pos?(move)
   end
 end
 
@@ -82,7 +84,7 @@ class King < SteppingPiece
     [-1, -1],
     [-1,  0],
     [-1,  1],
-    [ 1,  0],
+    [ 0,  1],
   ]
 end
 
@@ -113,6 +115,6 @@ class Queen < SlidingPiece
     [-1, -1],
     [-1,  0],
     [-1,  1],
-    [ 1,  0],
+    [ 0,  1],
   ]
 end
