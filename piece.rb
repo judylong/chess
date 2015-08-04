@@ -49,21 +49,59 @@ def SteppingPiece < Piece
 end
 
 def Knight < SteppingPiece
-  DELTA
+  DELTAS = [
+    [-2, -1],
+    [-2,  1],
+    [-1, -2],
+    [-1,  2],
+    [ 1, -2],
+    [ 1,  2],
+    [ 2, -1],
+    [ 2,  1]
+  ]
+
 end
 
 def King < SteppingPiece
-
+  DELTAS = [
+    [ 1,  1],
+    [ 1,  0],
+    [ 1, -1],
+    [ 0, -1],
+    [-1, -1],
+    [-1,  0],
+    [-1,  1],
+    [ 1,  0],
+  ]
 end
 
 def Bishop < SlidingPiece
-
+  DELTAS = [
+    [ 1,  1],
+    [ 1, -1],
+    [-1, -1],
+    [-1,  1],
+  ]
 end
 
 def Rook < SlidingPiece
-
+  DELTAS = [
+    [ 1,  0],
+    [ 0, -1],
+    [-1,  0],
+    [ 1,  0],
+  ]
 end
 
 def Queen < SlidingPiece
-
+  DELTAS = [
+    [ 1,  1],
+    [ 1,  0],
+    [ 1, -1],
+    [ 0, -1],
+    [-1, -1],
+    [-1,  0],
+    [-1,  1],
+    [ 1,  0],
+  ]
 end
