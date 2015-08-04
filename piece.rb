@@ -24,6 +24,10 @@ class Piece
 
     [x + dx, y + dy]
   end
+
+  def valid_pos?(pos)
+    board[pos].color != color && board.on_board?(pos)
+  end
 end
 
 def SlidingPiece < Piece
