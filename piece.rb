@@ -106,7 +106,7 @@ class Pawn < SteppingPiece
     color == :W ? DELTAS : DELTAS.map { |dx, dy| [dx * -1, dy] }
   end
 
-  def update_piece
+  def update_piece(pos)
     super
     self.first_move = false
   end
