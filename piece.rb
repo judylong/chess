@@ -57,4 +57,21 @@ def SteppingPiece < Piece
 end
 
 def Knight < SteppingPiece
+
+end
+
+def King < SteppingPiece
+
+end
+
+def Bishop < SlidingPiece
+
+end
+
+def Rook < SlidingPiece
+
+end
+
+def Queen < SlidingPiece
+
 end
