@@ -11,6 +11,25 @@ class Board
     pos.all? { |coord| coord.between?(0, 7) }
   end
 
+  def move(start_pos, end_pos)
+    piece = self[start_pos]
+
+    raise "No piece at start position!" if piece.nil?
+    raise "Not a valid move!" unless piece.moves.include?(end_pos)
+
+    self[end_pos] = piece
+    piece.update_piece(end_pos)
+
+    self[start_pos] = nil
+  end
+
+  def in_check?(color)
+    opposing_color = (color == :W ? :B : :W)
+    opposing_pieces = find_pieces(opposing_color)
+    king = find_pieces(color, "King")[0]
+
+    opposing_pieces.any? { |piece| piece.moves.include?(king.pos) }
+  end
 
   def find_pieces(color, type = nil)
     colored_pieces = grid.flatten.select do |piece|
@@ -32,16 +51,6 @@ class Board
     @grid[x][y] = value
   end
 
-  def setup_pieces
-    populate_row(0, :W, base_row_pieces)
-    populate_row(1, :W, Array.new(8) { Pawn.new })
-
-    populate_row(7, :B, base_row_pieces.reverse)
-    populate_row(6, :B, Array.new(8) { Pawn.new })
-
-    nil
-  end
-
   def inspect
     " "
   end
@@ -51,6 +60,16 @@ class Board
     grid.each_with_index do |row, n|
       puts "#{n} " + row.map { |square| square.nil? ? "__" : square }.join(" ")
     end
+
+    nil
+  end
+
+  def setup_pieces
+    populate_row(0, :W, base_row_pieces)
+    populate_row(1, :W, Array.new(8) { Pawn.new })
+
+    populate_row(7, :B, base_row_pieces.reverse)
+    populate_row(6, :B, Array.new(8) { Pawn.new })
 
     nil
   end
