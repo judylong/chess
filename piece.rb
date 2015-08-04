@@ -39,6 +39,14 @@ class Piece
   end
 end
 
+class Pawn < Piece
+  def initialize(pos, board, nil)
+    super
+    @first_move = true
+  end
+end
+
+
 class SlidingPiece < Piece
   def potential_moves(delta)
     moves = []
