@@ -1,3 +1,5 @@
+require_relative 'piece'
+
 class Board
   attr_reader :grid
 
@@ -21,20 +23,30 @@ class Board
 
   def setup_pieces
     populate_row(0, :W, base_row_pieces)
-    populate_row(1, :W, Array.new(8) { Pawn.new })
+    # populate_row(1, :W, Array.new(8) { Pawn.new })
 
     populate_row(7, :B, base_row_pieces.reverse)
-    populate_row(6, :B, Array.new(8) { Pawn.new })
+    # populate_row(6, :B, Array.new(8) { Pawn.new })
 
     nil
+  end
+
+  def inspect
+    " "
+  end
+
+  def render
+    grid.each do
+      |row| puts row.map { |square| square.nil? ? "__" : square }.join(" ")
+    end
   end
 
   def populate_row(row_idx, color, pieces)
     grid[row_idx].each_index do |idx|
       piece = pieces[idx]
-      piece.pos, piece.board, piece.color = [0, idx], self, color
+      piece.pos, piece.board, piece.color = [row_idx, idx], self, color
 
-      self[[0,idx]] = piece
+      self[[row_idx,idx]] = piece
     end
 
     nil
@@ -52,5 +64,4 @@ class Board
       Rook.new
     ]
   end
-
 end
