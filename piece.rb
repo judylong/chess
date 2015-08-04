@@ -13,7 +13,7 @@ class Piece
   def moves
     positions = []
 
-    self.class::DELTAS.each do |delta|
+    deltas.each do |delta|
       p delta
       possible_moves = potential_moves(delta)
       positions.concat(possible_moves) unless possible_moves.nil?
@@ -37,21 +37,11 @@ class Piece
     piece = self.class.to_s[0..1]
     self.color == :W ? piece.red : piece.black
   end
-end
 
-class Pawn < Piece
-  attr_accessor :first_move
-
-  def initialize(pos, board, nil)
-    super
-    @first_move = true
-  end
-
-  def first_move?
-    first_move
+  def deltas
+    self.class::DELTAS
   end
 end
-
 
 class SlidingPiece < Piece
   def potential_moves(delta)
@@ -72,6 +62,41 @@ class SteppingPiece < Piece
   def potential_moves(delta)
     move = next_pos(pos, delta)
     [move] if valid_pos?(move)
+  end
+end
+
+class Pawn < SteppingPiece
+  DELTAS = [
+    [1, -1], #capture
+    [1,  1], #capture
+    [2,  0], #first move
+    [1,  0] #anytime
+  ]
+
+  attr_accessor :first_move
+
+  def initialize
+    super
+    @first_move = true
+  end
+
+  def first_move?
+    first_move
+  end
+
+  def valid_pos?(new_pos)
+    return false unless board.on_board?(new_pos)
+    if new_pos[1] != pos[1] #capture move
+      return false if board[pos].color != color
+    elsif new_pos[0] == pos[0] + 2
+      return false unless first_move?
+      return false if !board[new_pos].nil? ||
+        (color == :W ? board[pos[0] + 1, pos[1]] : board[pos[0] - 1, pos[1]]).nil?
+    else
+      return false unless board[new_pos].nil?
+    end
+
+    true
   end
 end
 
