@@ -36,9 +36,12 @@ class Board
   end
 
   def render
-    grid.each do
-      |row| puts row.map { |square| square.nil? ? "__" : square }.join(" ")
+    puts "  0  1  2  3  4  5  6  7"
+    grid.each_with_index do |row, n|
+      puts "#{n} " + row.map { |square| square.nil? ? "__" : square }.join(" ")
     end
+
+    nil
   end
 
   def populate_row(row_idx, color, pieces)
