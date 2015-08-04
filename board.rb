@@ -11,6 +11,12 @@ class Board
     pos.all? { |coord| coord.between?(0, 7) }
   end
 
+  def find_pieces(color, type)
+    grid.flatten.select do |piece|
+      !piece.nil? && piece.color == color && piece.class.to_s == type
+    end
+  end
+
   def [](pos)
     x, y = pos
     @grid[x][y]
