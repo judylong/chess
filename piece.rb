@@ -40,9 +40,15 @@ class Piece
 end
 
 class Pawn < Piece
+  attr_accessor :first_move
+
   def initialize(pos, board, nil)
     super
     @first_move = true
+  end
+
+  def first_move?
+    first_move
   end
 end
 
