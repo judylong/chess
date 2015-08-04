@@ -18,3 +18,6 @@ class Piece
     positions
   end
 end
+
+def SlidingPiece < Piece
+end
