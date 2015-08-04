@@ -7,4 +7,14 @@ class Piece
     @board = board
     @color = color
   end
+
+  def moves
+    positions = []
+
+    DELTAS.each do |delta|
+      positions.concat(potential_moves(delta))
+    end
+
+    positions
+  end
 end
