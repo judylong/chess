@@ -1,6 +1,7 @@
+require 'colorize'
+
 class Piece
-  attr_reader :board, :color
-  attr_accessor :pos
+  attr_accessor :pos, :board, :color
 
   def initialize(pos = nil, board = nil, color = nil)
     @pos = pos
@@ -27,6 +28,11 @@ class Piece
 
   def valid_pos?(pos)
     board[pos].color != color && board.on_board?(pos)
+  end
+
+  def to_s
+    piece = self.class.to_s[0..1]
+    self.color == :W ? piece.red : piece.black
   end
 end
 
