@@ -1,4 +1,5 @@
 require 'colorize'
+require 'byebug'
 
 class Piece
   attr_accessor :pos, :board, :color
@@ -11,8 +12,9 @@ class Piece
 
   def moves
     positions = []
-#self.class::
-    DELTAS.each do |delta|
+
+    self.class::DELTAS.each do |delta|
+      p delta
       positions.concat(potential_moves(delta))
     end
 
@@ -27,7 +29,7 @@ class Piece
   end
 
   def valid_pos?(pos)
-    board[pos].color != color && board.on_board?(pos)
+    board.on_board?(pos) && (board[pos].nil? || board[pos].color != color)
   end
 
   def to_s
@@ -40,8 +42,11 @@ class SlidingPiece < Piece
   def potential_moves(delta)
     moves = []
 
-    until !valid_pos?(move = next_pos(pos, delta))
+    current_pos = pos
+
+    until !valid_pos?(move = next_pos(current_pos, delta))
       moves << move
+      current_pos = move
     end
 
     moves
@@ -95,7 +100,7 @@ class Rook < SlidingPiece
     [ 1,  0],
     [ 0, -1],
     [-1,  0],
-    [ 1,  0],
+    [ 0,  1],
   ]
 end
 
