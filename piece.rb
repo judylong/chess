@@ -10,7 +10,7 @@ class Piece
 
   def moves
     positions = []
-
+#self.class::
     DELTAS.each do |delta|
       positions.concat(potential_moves(delta))
     end
@@ -30,7 +30,7 @@ class Piece
   end
 end
 
-def SlidingPiece < Piece
+class SlidingPiece < Piece
   def potential_moves(delta)
     moves = []
 
@@ -42,13 +42,13 @@ def SlidingPiece < Piece
   end
 end
 
-def SteppingPiece < Piece
+class SteppingPiece < Piece
   def potential_moves(delta)
     [next_pos(pos, delta)]
   end
 end
 
-def Knight < SteppingPiece
+class Knight < SteppingPiece
   DELTAS = [
     [-2, -1],
     [-2,  1],
@@ -62,7 +62,7 @@ def Knight < SteppingPiece
 
 end
 
-def King < SteppingPiece
+class King < SteppingPiece
   DELTAS = [
     [ 1,  1],
     [ 1,  0],
@@ -75,7 +75,7 @@ def King < SteppingPiece
   ]
 end
 
-def Bishop < SlidingPiece
+class Bishop < SlidingPiece
   DELTAS = [
     [ 1,  1],
     [ 1, -1],
@@ -84,7 +84,7 @@ def Bishop < SlidingPiece
   ]
 end
 
-def Rook < SlidingPiece
+class Rook < SlidingPiece
   DELTAS = [
     [ 1,  0],
     [ 0, -1],
@@ -93,7 +93,7 @@ def Rook < SlidingPiece
   ]
 end
 
-def Queen < SlidingPiece
+class Queen < SlidingPiece
   DELTAS = [
     [ 1,  1],
     [ 1,  0],
