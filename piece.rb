@@ -47,4 +47,11 @@ def SlidingPiece < Piece
 end
 
 def SteppingPiece < Piece
+  def initialize(pos, board, color)
+    super
+  end
+
+  def potential_moves(delta)
+    [next_pos(pos, delta)]
+  end
 end
