@@ -5,6 +5,10 @@ class Board
     @grid = grid
   end
 
+  def on_board?(pos)
+    pos.all? { |coord| coord.between?(0, 7) }
+  end
+
   def [](pos)
     x, y = pos
     @grid[x][y]
