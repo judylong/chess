@@ -23,10 +23,10 @@ class Board
 
   def setup_pieces
     populate_row(0, :W, base_row_pieces)
-    # populate_row(1, :W, Array.new(8) { Pawn.new })
+    populate_row(1, :W, Array.new(8) { Pawn.new })
 
     populate_row(7, :B, base_row_pieces.reverse)
-    # populate_row(6, :B, Array.new(8) { Pawn.new })
+    populate_row(6, :B, Array.new(8) { Pawn.new })
 
     nil
   end
