@@ -45,3 +45,6 @@ def SlidingPiece < Piece
     moves
   end
 end
+
+def SteppingPiece < Piece
+end
