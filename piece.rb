@@ -55,3 +55,6 @@ def SteppingPiece < Piece
     [next_pos(pos, delta)]
   end
 end
+
+def Knight < SteppingPiece
+end
