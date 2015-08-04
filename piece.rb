@@ -17,7 +17,27 @@ class Piece
 
     positions
   end
+
+  def next_pos(pos, delta)
+    x, y = pos
+    dx, dy = delta
+
+    [x + dx, y + dy]
+  end
 end
 
 def SlidingPiece < Piece
+  def initialize(pos, board, color)
+    super
+  end
+
+  def potential_moves(delta)
+    moves = []
+
+    until !valid_pos?(move = next_pos(pos, delta))
+      moves << move
+    end
+
+    moves
+  end
 end
