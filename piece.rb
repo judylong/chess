@@ -14,12 +14,15 @@ class Piece
     positions = []
 
     deltas.each do |delta|
-      p delta
       possible_moves = potential_moves(delta)
       positions.concat(possible_moves) unless possible_moves.nil?
     end
 
     positions
+  end
+
+  def update_piece(pos)
+    self.pos = pos
   end
 
   def next_pos(pos, delta)
@@ -101,6 +104,11 @@ class Pawn < SteppingPiece
 
   def deltas
     color == :W ? DELTAS : DELTAS.map { |dx, dy| [dx * -1, dy] }
+  end
+
+  def update_piece
+    super
+    self.first_move = false
   end
 end
 
