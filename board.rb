@@ -44,6 +44,10 @@ class Board
     new_board
   end
 
+  def checkmate?(color)
+    in_check?(color) && find_pieces.all? { |piece| piece.valid_moves.empty? }
+  end
+
   def duplicate_piece(piece, board)
     pos, color = piece.pos, piece.color
 
