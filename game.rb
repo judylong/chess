@@ -66,6 +66,7 @@ class Game
   end
 
   def prompt
+    print "\n"
     puts "#{current_player}'s turn. Enter a move:"
     print "> "
     input = gets.chomp.downcase

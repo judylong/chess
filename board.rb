@@ -94,9 +94,9 @@ class Board
   end
 
   def render
-    puts "  a  b  c  d  e  f  g  h"
+    puts "  a b c d e f g h"
     grid.each_with_index do |row, n|
-      row_string = row.map { |square| square.nil? ? "__" : square }.join(" ")
+      row_string = row.map { |square| square.nil? ? "_" : square }.join(" ")
       puts "#{(-1 * n) + 8} " + row_string
     end
 
