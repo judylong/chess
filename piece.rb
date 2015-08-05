@@ -99,17 +99,39 @@ class Pawn < SteppingPiece
 
   def valid_pos?(new_pos)
     return false unless board.on_board?(new_pos)
-    if new_pos[1] != pos[1] #capture move
-      return false if board[new_pos].nil? || board[new_pos].color == color
-    elsif new_pos[0] == pos[0] + 2
+    if capture_move?(new_pos)
+      return false unless can_capture?(new_pos)
+    elsif double_move?(new_pos)
       return false unless first_move?
-      return false if !board[new_pos].nil? ||
-        !(color == :B ? board[[pos[0] + 1, pos[1]]] : board[[pos[0] - 1, pos[1]]]).nil?
+      return false unless valid_double_move?(new_pos)
     else
       return false unless board[new_pos].nil?
     end
 
     true
+  end
+
+  def can_capture?(new_pos)
+    !board[new_pos].nil? && board[new_pos].color != color
+  end
+
+  def capture_move?(new_pos)
+    new_pos[1] != pos[1]
+  end
+
+  def double_move?(new_pos)
+    new_pos[0] == pos[0] + 2
+  end
+
+  def valid_double_move?(new_pos)
+    new_pos_open = board[new_pos].nil?
+    if color == :B
+      adjacent_pos = board[[pos[0] + 1, pos[1]]]
+    else
+      adjacent_pos = board[[pos[0] - 1, pos[1]]]
+    end
+
+    new_pos_open && adjacent_pos.nil?
   end
 
   def deltas
