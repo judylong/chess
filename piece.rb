@@ -78,7 +78,7 @@ class Pawn < SteppingPiece
 
   attr_accessor :first_move
 
-  def initialize(pos, board, color)
+  def initialize(pos = nil, board = nil, color = nil)
     super
     @first_move = true
   end
