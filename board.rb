@@ -87,9 +87,9 @@ class Board
     @grid[x][y] = value
   end
 
-  def inspect
-    " "
-  end
+  # def inspect
+  #   " "
+  # end
 
   def render
     puts "  0  1  2  3  4  5  6  7"
@@ -101,11 +101,11 @@ class Board
   end
 
   def setup_pieces
-    populate_row(0, :W, base_row_pieces)
-    populate_row(1, :W, Array.new(8) { Pawn.new })
+    populate_row(0, :B, base_row_pieces)
+    populate_row(1, :B, Array.new(8) { Pawn.new })
 
-    populate_row(7, :B, base_row_pieces.reverse)
-    populate_row(6, :B, Array.new(8) { Pawn.new })
+    populate_row(7, :W, base_row_pieces)
+    populate_row(6, :W, Array.new(8) { Pawn.new })
 
     nil
   end
@@ -115,7 +115,7 @@ class Board
       piece = pieces[idx]
       piece.pos, piece.board, piece.color = [row_idx, idx], self, color
 
-      self[[row_idx,idx]] = piece
+      self[[row_idx, idx]] = piece
     end
 
     nil
