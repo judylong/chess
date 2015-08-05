@@ -59,11 +59,12 @@ end
 class SlidingPiece < Piece
   def potential_moves(delta)
     moves = []
-
+    captured_piece = false
     current_pos = pos
 
-    until !valid_pos?(move = next_pos(current_pos, delta))
+    until captured_piece || !valid_pos?(move = next_pos(current_pos, delta))
       moves << move
+      captured_piece = true if !board[move].nil? && board[move].color != color
       current_pos = move
     end
 
