@@ -23,6 +23,42 @@ class Board
     self[start_pos] = nil
   end
 
+  def dup
+    new_board = Board.new
+
+    grid.each_with_index do |row, row_i|
+      row.each_index do |col_i|
+        piece = self[[row_i, col_i]]
+        dup_piece = piece.nil? ? nil : duplicate_piece(piece, new_board)
+        new_board[[row_i, col_i]] = dup_piece
+      end
+    end
+
+    new_board
+  end
+
+  def duplicate_piece(piece, board)
+    pos, color = piece.pos, piece.color
+
+    case piece.class.to_s
+    when "King"
+      King.new(pos, board, color)
+    when "Knight"
+      Knight.new(pos, board, color)
+    when "Queen"
+      Queen.new(pos, board, color)
+    when "Bishop"
+      Bishop.new(pos, board, color)
+    when "Rook"
+      Rook.new(pos, board, color)
+    when "Pawn"
+      pawn = Pawn.new(pos, board, color)
+      pawn.first_move = piece.first_move
+      pawn
+    end
+  end
+
+
   def in_check?(color)
     opposing_color = (color == :W ? :B : :W)
     opposing_pieces = find_pieces(opposing_color)
