@@ -45,13 +45,24 @@ class Game
   def parse_positions(input)
     positions = input.split(",").map(&:strip)
     parsed_positions = positions.map { |position| parse(position) }
-    raise InvalidMoveError unless valid_move?(parsed_positions.first)
+    validate_move(parsed_positions.first)
 
     parsed_positions
   end
 
-  def valid_move?(start_pos)
-    current_player == board[start_pos].color
+  def validate_move(start_pos)
+    error_message = nil
+
+    piece = board[start_pos]
+    if piece.nil?
+      error_message = "Invalid move! Start position is empty."
+    elsif current_player != board[start_pos].color
+      error_message = "Invalid move! Chosen piece is not yours."
+    end
+
+    raise InvalidMoveError.new(error_message) unless error_message.nil?
+
+    nil
   end
 
   def prompt
