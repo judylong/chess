@@ -36,6 +36,14 @@ class Piece
     board.on_board?(pos) && (board[pos].nil? || board[pos].color != color)
   end
 
+  def move_into_check?(possible_pos)
+    new_board = board.dup
+    new_board.move(pos, possible_pos)
+    new_board.in_check?(color)
+  end
+
+  
+
   def to_s
     piece = self.class.to_s[0..1]
     self.color == :W ? piece.red : piece.black
