@@ -71,6 +71,10 @@ class Pawn < SteppingPiece
     super
     self.first_move = false
   end
+
+  def to_s
+    color == :W ? "\u2659" : "\u265F"
+  end
 end
 
 class Knight < SteppingPiece
@@ -85,6 +89,9 @@ class Knight < SteppingPiece
     [ 2,  1]
   ]
 
+  def to_s
+    color == :W ? "\u2658" : "\u265E"
+  end
 end
 
 class King < SteppingPiece
@@ -98,6 +105,10 @@ class King < SteppingPiece
     [-1,  1],
     [ 0,  1],
   ]
+
+  def to_s
+    color == :W ? "\u2654" : "\u265A"
+  end
 end
 
 class Bishop < SlidingPiece
@@ -107,6 +118,10 @@ class Bishop < SlidingPiece
     [-1, -1],
     [-1,  1],
   ]
+
+  def to_s
+    color == :W ? "\u2657" : "\u265D"
+  end
 end
 
 class Rook < SlidingPiece
@@ -116,6 +131,10 @@ class Rook < SlidingPiece
     [-1,  0],
     [ 0,  1],
   ]
+
+  def to_s
+    color == :W ? "\u2656" : "\u265C"
+  end
 end
 
 class Queen < SlidingPiece
@@ -129,4 +148,8 @@ class Queen < SlidingPiece
     [-1,  1],
     [ 0,  1],
   ]
+
+  def to_s
+    color == :W ? "\u2655" : "\u265B"
+  end
 end

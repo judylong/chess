@@ -46,11 +46,6 @@ class Piece
     moves.reject { |move| move_into_check?(move) }
   end
 
-  def to_s
-    piece = self.class.to_s[0..1]
-    self.color == :W ? piece.red : piece.black
-  end
-
   def deltas
     self.class::DELTAS
   end
