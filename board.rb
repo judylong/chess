@@ -1,4 +1,4 @@
-require_relative 'piece'
+require_relative 'named_pieces'
 
 class Board
   attr_reader :grid
@@ -45,7 +45,9 @@ class Board
   end
 
   def checkmate?(color)
-    in_check?(color) && find_pieces(color).all? { |piece| piece.valid_moves.empty? }
+    in_check?(color) && find_pieces(color).all? do |piece|
+      piece.valid_moves.empty?
+    end
   end
 
   def duplicate_piece(piece, board)
@@ -98,14 +100,16 @@ class Board
     @grid[x][y] = value
   end
 
-  # def inspect
-  #   " "
-  # end
+  def inspect
+    ""
+  end
 
   def render
     puts "  a  b  c  d  e  f  g  h"
     grid.each_with_index do |row, n|
-      puts "#{(-1 * n) + 8} " + row.map { |square| square.nil? ? "__" : square }.join(" ")
+      puts "#{(-1 * n) + 8} " + row.map do |square|
+        square.nil? ? "__" : square
+      end.join(" ")
     end
 
     nil
