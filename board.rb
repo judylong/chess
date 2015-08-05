@@ -14,9 +14,9 @@ class Board
   def move(start_pos, end_pos)
     piece = self[start_pos]
 
-    raise ArgumentError.new("No piece at start position!") if piece.nil?
-    raise ArgumentError.new("Not a valid move!") unless piece.moves.include?(end_pos)
-    raise ArgumentError.new("Move will leave you in check!") unless piece.valid_moves.include?(end_pos)
+    raise InvalidMoveError unless !piece.nil? &&
+                piece.moves.include?(end_pos) &&
+                piece.valid_moves.include?(end_pos)
 
     move!(start_pos, end_pos)
   end
