@@ -1,4 +1,5 @@
 require_relative 'board'
+require_relative 'error'
 
 class Game
   attr_reader :board
@@ -30,7 +31,7 @@ class Game
 
   def play_turn
     board.move(*get_move)
-  rescue ArgumentError => e
+  rescue InvalidMoveError => e
       puts e.message
       retry
   end
@@ -38,9 +39,7 @@ class Game
   def get_move
     positions = prompt.split(",").map(&:strip)
     parsed_positions = positions.map { |position| parse(position) }
-    unless valid_move?(parsed_positions.first)
-      raise ArgumentError.new("Invalid move!")
-    end
+    raise InvalidMoveError unless valid_move?(parsed_positions.first)
 
     parsed_positions
   end
@@ -56,14 +55,20 @@ class Game
   end
 
   def parse(move)
-    raise ArgumentError.new("Invalid move!") if move.length != 2
+    raise InvalidMoveError if move.length != 2
     col, row = move.split("")
-    row = Integer(row)
+    row = to_i(row)
     unless move_in_range?(row, col)
-      raise ArgumentError.new("Invalid move!")
+      raise InvalidMoveError
     end
 
     [(-1 * row) + 8, col.ord - 97]
+  end
+
+  def to_i(row)
+    row = Integer(row)
+  rescue ArgumentError
+    raise InvalidMoveError
   end
 
   def move_in_range?(row, col)
