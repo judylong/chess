@@ -42,7 +42,9 @@ class Piece
     new_board.in_check?(color)
   end
 
-  
+  def valid_moves
+    moves.reject { |move| move_into_check?(move) }
+  end
 
   def to_s
     piece = self.class.to_s[0..1]
@@ -111,7 +113,7 @@ class Pawn < SteppingPiece
   end
 
   def deltas
-    color == :W ? DELTAS : DELTAS.map { |dx, dy| [dx * -1, dy] }
+    color == :B ? DELTAS : DELTAS.map { |dx, dy| [dx * -1, dy] }
   end
 
   def update_piece(pos)
