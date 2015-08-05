@@ -38,7 +38,7 @@ class Piece
 
   def move_into_check?(possible_pos)
     new_board = board.dup
-    new_board.move(pos, possible_pos)
+    new_board.move!(pos, possible_pos)
     new_board.in_check?(color)
   end
 
@@ -104,7 +104,7 @@ class Pawn < SteppingPiece
     elsif new_pos[0] == pos[0] + 2
       return false unless first_move?
       return false if !board[new_pos].nil? ||
-        !(color == :W ? board[[pos[0] + 1, pos[1]]] : board[[pos[0] - 1, pos[1]]]).nil?
+        !(color == :B ? board[[pos[0] + 1, pos[1]]] : board[[pos[0] - 1, pos[1]]]).nil?
     else
       return false unless board[new_pos].nil?
     end
