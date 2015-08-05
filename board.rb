@@ -33,12 +33,11 @@ class Board
   def dup
     new_board = Board.new
 
-    grid.each_with_index do |row, row_i|
-      row.each_index do |col_i|
-        piece = self[[row_i, col_i]]
-        dup_piece = piece.nil? ? nil : duplicate_piece(piece, new_board)
-        new_board[[row_i, col_i]] = dup_piece
-      end
+    white_pieces = find_pieces(:W)
+    black_pieces = find_pieces(:B)
+
+    (white_pieces + black_pieces).each do |piece|
+        new_board[piece.pos] = piece.dup(new_board)
     end
 
     new_board
@@ -47,27 +46,6 @@ class Board
   def checkmate?(color)
     in_check?(color) && find_pieces(color).all? do |piece|
       piece.valid_moves.empty?
-    end
-  end
-
-  def duplicate_piece(piece, board)
-    pos, color = piece.pos, piece.color
-
-    case piece.class.to_s
-    when "King"
-      King.new(pos, board, color)
-    when "Knight"
-      Knight.new(pos, board, color)
-    when "Queen"
-      Queen.new(pos, board, color)
-    when "Bishop"
-      Bishop.new(pos, board, color)
-    when "Rook"
-      Rook.new(pos, board, color)
-    when "Pawn"
-      pawn = Pawn.new(pos, board, color)
-      pawn.first_move = piece.first_move
-      pawn
     end
   end
 
@@ -81,10 +59,7 @@ class Board
   end
 
   def find_pieces(color, type = nil)
-    colored_pieces = grid.flatten.select do |piece|
-      !piece.nil? && piece.color == color
-    end
-
+    colored_pieces = grid.flatten.compact.select { |piece| piece.color == color }
     colored_pieces.select! { |piece| piece.class.to_s == type } unless type.nil?
 
     colored_pieces
@@ -107,9 +82,8 @@ class Board
   def render
     puts "  a  b  c  d  e  f  g  h"
     grid.each_with_index do |row, n|
-      puts "#{(-1 * n) + 8} " + row.map do |square|
-        square.nil? ? "__" : square
-      end.join(" ")
+      row_string = row.map { |square| square.nil? ? "__" : square }.join(" ")
+      puts "#{(-1 * n) + 8} " + row_string
     end
 
     nil
@@ -117,20 +91,17 @@ class Board
 
   def setup_pieces
     populate_row(0, :B, base_row_pieces)
-    populate_row(1, :B, Array.new(8) { Pawn.new })
+    populate_row(1, :B, Array.new(8) { Pawn })
 
     populate_row(7, :W, base_row_pieces)
-    populate_row(6, :W, Array.new(8) { Pawn.new })
+    populate_row(6, :W, Array.new(8) { Pawn })
 
     nil
   end
 
   def populate_row(row_idx, color, pieces)
     grid[row_idx].each_index do |idx|
-      piece = pieces[idx]
-      piece.pos, piece.board, piece.color = [row_idx, idx], self, color
-
-      self[[row_idx, idx]] = piece
+      self[[row_idx, idx]] = pieces[idx].new([row_idx, idx], self, color)
     end
 
     nil
@@ -138,14 +109,14 @@ class Board
 
   def base_row_pieces
     [
-      Rook.new,
-      Knight.new,
-      Bishop.new,
-      Queen.new,
-      King.new,
-      Bishop.new,
-      Knight.new,
-      Rook.new
+      Rook,
+      Knight,
+      Bishop,
+      Queen,
+      King,
+      Bishop,
+      Knight,
+      Rook
     ]
   end
 end
