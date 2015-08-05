@@ -1,11 +1,17 @@
 require_relative 'piece'
 
-class Pawn < SteppingPiece
-  DELTAS = [
+class Pawn < Piece
+  CAPTURE_DELTAS = [
     [1, -1], #capture
     [1,  1], #capture
-    [2,  0], #first move
+  ]
+
+  STEP_DELTA = [
     [1,  0] #anytime
+  ]
+
+  DOUBLE_STEP_DELTA = [
+    [2,  0], #first move
   ]
 
   attr_accessor :first_move
@@ -26,45 +32,48 @@ class Pawn < SteppingPiece
     copy
   end
 
-  def valid_pos?(new_pos)
-    return false unless board.on_board?(new_pos)
-    if capture_move?(new_pos)
-      return false unless can_capture?(new_pos)
-    elsif double_move?(new_pos)
-      return false unless first_move?
-      return false unless valid_double_move?(new_pos)
+  def moves
+    possible_moves = []
+
+    possible_moves.concat(capturable_positions)
+
+    step_pos = new_pos(deltas(STEP_DELTA).first)
+
+    if board[step_pos].nil?
+      possible_moves << step_pos
     else
-      return false unless board[new_pos].nil?
+      return possible_moves
     end
 
-    true
-  end
-
-  def can_capture?(new_pos)
-    !board[new_pos].nil? && board[new_pos].color != color
-  end
-
-  def capture_move?(new_pos)
-    new_pos[1] != pos[1]
-  end
-
-  def double_move?(new_pos)
-    new_pos[0] == pos[0] + 2
-  end
-
-  def valid_double_move?(new_pos)
-    new_pos_open = board[new_pos].nil?
-    if color == :B
-      adjacent_pos = board[[pos[0] + 1, pos[1]]]
-    else
-      adjacent_pos = board[[pos[0] - 1, pos[1]]]
+    if first_move?
+      possible_moves << double_step_pos unless double_step_pos.empty?
     end
 
-    new_pos_open && adjacent_pos.nil?
+    possible_moves
   end
 
-  def deltas
-    color == :B ? DELTAS : DELTAS.map { |dx, dy| [dx * -1, dy] }
+  def double_step_pos
+    position = new_pos(deltas(DOUBLE_STEP_DELTA).first)
+    return position if board[position].nil?
+
+    []
+  end
+
+  def capturable_positions
+    deltas(CAPTURE_DELTAS).map { |delta| new_pos(delta) }.select do |position|
+      !board[position].nil? && board[position].color != color
+    end
+  end
+
+  def new_pos(delta)
+    x, y = pos
+    dx, dy = delta
+
+    [x + dx, y + dy]
+  end
+
+  def deltas(specific_deltas)
+    color == :B ? specific_deltas : specific_deltas.map { |dx, dy| [dx * -1, dy] }
   end
 
   def update_piece(pos)
