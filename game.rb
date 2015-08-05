@@ -21,6 +21,13 @@ class Game
     puts "Game over! #{current_player} wins!"
   end
 
+  def get_move
+  end
+
+  def switch_player
+    self.current_player = (current_player == :W ? :B : :W)
+  end
+
   def prompt
   end
 end
