@@ -10,13 +10,20 @@ class Pawn < SteppingPiece
 
   attr_accessor :first_move
 
-  def initialize(pos = nil, board = nil, color = nil)
+  def initialize(pos, board, color)
     super
     @first_move = true
   end
 
   def first_move?
-    first_move
+    @first_move
+  end
+
+  def dup(new_board)
+    copy = super
+    copy.first_move = first_move
+
+    copy
   end
 
   def valid_pos?(new_pos)
