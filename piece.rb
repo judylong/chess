@@ -15,7 +15,7 @@ class Piece
 
     deltas.each do |delta|
       possible_moves = potential_moves(delta)
-      positions.concat(possible_moves) unless possible_moves.nil?
+      positions.concat(possible_moves) #unless possible_moves.nil?
     end
 
     positions
@@ -54,6 +54,10 @@ class Piece
   def deltas
     self.class::DELTAS
   end
+
+  def dup(new_board)
+    self.class.new(pos, new_board, color)
+  end
 end
 
 class SlidingPiece < Piece
@@ -75,6 +79,8 @@ end
 class SteppingPiece < Piece
   def potential_moves(delta)
     move = next_pos(pos, delta)
-    [move] if valid_pos?(move)
+    return [move] if valid_pos?(move)
+
+    []
   end
 end
