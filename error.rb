@@ -1,8 +1,7 @@
 class InvalidMoveError < StandardError
-  attr_reader :object, :message
+  attr_reader :message
 
-  def initialize(object)
-    @object = object
-    @message = "Invalid move!"
+  def initialize(message = nil)
+    @message ||= "Invalid move!"
   end
 end
