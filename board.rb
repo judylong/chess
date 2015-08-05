@@ -16,6 +16,13 @@ class Board
 
     raise "No piece at start position!" if piece.nil?
     raise "Not a valid move!" unless piece.moves.include?(end_pos)
+    raise "Move will leave you in check!" unless piece.valid_moves.include?(end_pos)
+
+    move!(start_pos, end_pos)
+  end
+
+  def move!(start_pos, end_pos)
+    piece = self[start_pos]
 
     self[end_pos] = piece
     piece.update_piece(end_pos)
