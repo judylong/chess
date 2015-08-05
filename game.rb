@@ -14,7 +14,7 @@ class Game
     until board.checkmate?(current_player)
       system("clear")
       board.render
-      board.move(*get_move)
+      play_turn
       switch_player
     end
 
@@ -28,16 +28,25 @@ class Game
     self.current_player = (current_player == :W ? :B : :W)
   end
 
-  def get_move
-    begin
-      positions = prompt.split(",").map(&:strip)
-      parsed_positions = positions.map { |position| parse(position) }
-    rescue ArgumentError => e
+  def play_turn
+    board.move(*get_move)
+  rescue ArgumentError => e
       puts e.message
       retry
+  end
+
+  def get_move
+    positions = prompt.split(",").map(&:strip)
+    parsed_positions = positions.map { |position| parse(position) }
+    unless valid_move?(parsed_positions.first)
+      raise ArgumentError.new("Invalid move!")
     end
 
     parsed_positions
+  end
+
+  def valid_move?(start_pos)
+    current_player == board[start_pos].color
   end
 
   def prompt
@@ -50,10 +59,15 @@ class Game
     raise ArgumentError.new("Invalid move!") if move.length != 2
     col, row = move.split("")
     row = Integer(row)
-    unless col.between?("a", "h") && row.between?(1, 8)
+    unless move_in_range?(row, col)
       raise ArgumentError.new("Invalid move!")
     end
 
-    [row - 1, col.ord - 97]
+    [(-1 * row) + 8, col.ord - 97]
   end
+
+  def move_in_range?(row, col)
+    col.between?("a", "h") && row.between?(1, 8)
+  end
+
 end
