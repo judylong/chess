@@ -37,7 +37,13 @@ class Game
   end
 
   def get_move
-    positions = prompt.split(",").map(&:strip)
+    input = prompt
+    parse_positions(input)
+  end
+
+
+  def parse_positions(input)
+    positions = input.split(",").map(&:strip)
     parsed_positions = positions.map { |position| parse(position) }
     raise InvalidMoveError unless valid_move?(parsed_positions.first)
 
