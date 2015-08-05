@@ -12,13 +12,27 @@ class Board
   end
 
   def move(start_pos, end_pos)
-    piece = self[start_pos]
-
-    raise InvalidMoveError unless !piece.nil? &&
-                piece.moves.include?(end_pos) &&
-                piece.valid_moves.include?(end_pos)
+    validate_move(start_pos, end_pos)
 
     move!(start_pos, end_pos)
+  end
+
+  def validate_move(start_pos, end_pos)
+    piece = self[start_pos]
+
+    error_message = nil
+
+    if piece.nil?
+      error_message = "Invalid move! Start position is empty."
+    elsif !piece.moves.include?(end_pos)
+      error_message = "Invalid move!"
+    elsif !piece.valid_moves.include?(end_pos)
+      error_message = "Invalid move! This move would move you into check."
+    end
+
+    raise InvalidMoveError.new(error_message) unless error_message.nil?
+
+    nil
   end
 
   def move!(start_pos, end_pos)
