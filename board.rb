@@ -14,9 +14,9 @@ class Board
   def move(start_pos, end_pos)
     piece = self[start_pos]
 
-    raise "No piece at start position!" if piece.nil?
-    raise "Not a valid move!" unless piece.moves.include?(end_pos)
-    raise "Move will leave you in check!" unless piece.valid_moves.include?(end_pos)
+    raise ArgumentError.new("No piece at start position!") if piece.nil?
+    raise ArgumentError.new("Not a valid move!") unless piece.moves.include?(end_pos)
+    raise ArgumentError.new("Move will leave you in check!") unless piece.valid_moves.include?(end_pos)
 
     move!(start_pos, end_pos)
   end
@@ -45,7 +45,7 @@ class Board
   end
 
   def checkmate?(color)
-    in_check?(color) && find_pieces.all? { |piece| piece.valid_moves.empty? }
+    in_check?(color) && find_pieces(color).all? { |piece| piece.valid_moves.empty? }
   end
 
   def duplicate_piece(piece, board)
@@ -103,9 +103,9 @@ class Board
   # end
 
   def render
-    puts "  0  1  2  3  4  5  6  7"
+    puts "  a  b  c  d  e  f  g  h"
     grid.each_with_index do |row, n|
-      puts "#{n} " + row.map { |square| square.nil? ? "__" : square }.join(" ")
+      puts "#{(-1 * n) + 8} " + row.map { |square| square.nil? ? "__" : square }.join(" ")
     end
 
     nil
